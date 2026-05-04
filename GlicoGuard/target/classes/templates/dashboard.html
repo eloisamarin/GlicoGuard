@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container dashboard-layout">
+    <section class="hero-card">
+        <div class="top-bar">
+            <div>
+                <p class="eyebrow">Painel principal</p>
+                <h1 th:text="'Ola, ' + ${user.name} + '!'"></h1>
+            </div>
+            <form method="post" th:action="@{/logout}">
+                <button class="secondary" type="submit">Sair</button>
+            </form>
+        </div>
+
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">Perfil</span>
+                <strong th:text="${user.role}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">E-mail</span>
+                <strong th:text="${user.email}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Nivel de acesso</span>
+                <strong th:text="${user.accessLevel}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Consentimento LGPD</span>
+                <strong th:text="${user.consentSigned ? 'Assinado' : 'Revogado ou pendente'}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">CPF</span>
+                <strong th:text="${user.cpf}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Idade</span>
+                <strong th:text="${user.age}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Paciente vinculado</span>
+                <strong th:text="${linkedPatientLabel}"></strong>
+            </div>
+        </div>
+
+        <div class="info-box">
+            O aplicativo GlicoGuard foi desenvolvido para ajudar pessoas com diabetes a controlar medicamentos, registrar medições de glicose, receber lembretes e acompanhar o consumo por gráficos interativos.
+        </div>
+
+        <div class="link-row">
+            <a class="text-link" th:href="@{/privacidade}">Abrir privacidade e direitos LGPD</a>
+            <a class="text-link" th:href="@{/dados/exportar}">Exportar meus dados</a>
+        </div>
+    </section>
+
+    <section class="panel-grid">
+        <article class="panel-card">
+            <h2>Atualizar e-mail</h2>
+            <form method="post" th:action="@{/credenciais/email}">
+                <label>Novo e-mail</label>
+                <input type="email" name="newEmail" th:value="${user.email}" required>
+                <button type="submit">Salvar e-mail</button>
+            </form>
+        </article>
+
+        <article class="panel-card">
+            <h2>Trocar senha</h2>
+            <form method="post" th:action="@{/credenciais/senha}">
+                <label>Senha atual</label>
+                <input type="password" name="currentPassword" required>
+
+                <label>Nova senha</label>
+                <input type="password" name="newPassword" placeholder="Minimo 8 caracteres" required>
+
+                <button type="submit">Salvar senha</button>
+            </form>
+        </article>
+
+        <article class="panel-card">
+            <h2>Controle de acesso</h2>
+            <form method="post" th:action="@{/credenciais/acesso}">
+                <label>Nivel do monitor/cuidador</label>
+                <select name="accessLevel">
+                    <option th:each="level : ${accessLevels}"
+                            th:value="${level}"
+                            th:text="${level}"
+                            th:selected="${level == user.accessLevel}"></option>
+                </select>
+                <button type="submit">Atualizar acesso</button>
+            </form>
+        </article>
+
+        <article class="panel-card">
+            <h2>Consentimento digital</h2>
+            <p>
+                O consentimento registra finalidade, versao e data. Ele tambem pode ser revogado na pagina de privacidade.
+            </p>
+            <form method="post" th:action="@{/consentimento}">
+                <button type="submit">Registrar consentimento</button>
+            </form>
+        </article>
+
+        <article class="panel-card" th:if="${canManageMedications}">
+            <h2>Registrar medicamentos</h2>
+            <p th:text="${user.role.name() == 'CUIDADOR'
+                ? 'Este registro sera salvo para o paciente vinculado: ' + linkedPatientLabel
+                : 'Este registro sera salvo para o proprio paciente.'}"></p>
+            <form method="post" th:action="@{/medicamentos}">
+                <label>Nome do medicamento</label>
+                <input type="text" name="medicationName" placeholder="Ex.: Insulina glargina" required>
+
+                <label>Dose</label>
+                <input type="text" name="dose" placeholder="Ex.: 10 UI" required>
+
+                <label>Frequencia</label>
+                <input type="text" name="frequency" placeholder="Ex.: 1 vez ao dia" required>
+
+                <label>Data e horario</label>
+                <input type="datetime-local" name="scheduledAt" required>
+
+                <button type="submit">Registrar medicamento</button>
+            </form>
+        </article>
+    </section>
+
+    <section class="table-card" th:if="${canManageMedications}">
+        <div class="section-header">
+            <h2>Medicamentos registrados</h2>
+            <p>Historico simples de medicamentos informados pelo paciente ou cuidador vinculado.</p>
+        </div>
+
+        <div th:if="${#lists.isEmpty(medications)}" class="info-box">
+            Nenhum medicamento foi registrado ainda.
+        </div>
+
+        <table th:if="${!#lists.isEmpty(medications)}">
+            <thead>
+            <tr>
+                <th>Medicamento</th>
+                <th>Dose</th>
+                <th>Frequencia</th>
+                <th>Data e horario</th>
+                <th>Registrado por</th>
+                <th>Criado em</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="medication : ${medications}">
+                <td th:text="${medication.medicationName}"></td>
+                <td th:text="${medication.dose}"></td>
+                <td th:text="${medication.frequency}"></td>
+                <td th:text="${medication.scheduledAt}"></td>
+                <td th:text="${medication.registeredByEmail}"></td>
+                <td th:text="${medication.createdAt}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Controles implementados</h2>
+            <p>Resumo tecnico dos mecanismos aplicados no codigo.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Controle</th>
+                <th>Descricao</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="control : ${securityControls.entrySet()}">
+                <td th:text="${control.key}"></td>
+                <td th:text="${control.value}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Historico de auditoria</h2>
+            <p>Logs de autenticacao, falhas, recuperacao, 2FA e direitos do titular.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Data e hora</th>
+                <th>Usuario</th>
+                <th>Acao</th>
+                <th>Resultado</th>
+                <th>Detalhe</th>
+                <th>Hash</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${auditEntries}">
+                <td th:text="${entry.timestamp}"></td>
+                <td th:text="${entry.userEmail}"></td>
+                <td th:text="${entry.action}"></td>
+                <td th:text="${entry.result}"></td>
+                <td th:text="${entry.detail}"></td>
+                <td th:text="${entry.integritySnippet}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

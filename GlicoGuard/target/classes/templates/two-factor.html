@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="landing">
+<main class="container centered-panel">
+    <section class="forms-card narrow">
+        <p class="eyebrow">Segundo fator</p>
+        <h1>Validação 2 Fatores</h1>
+        <p class="lead">
+            Depois da senha, o sistema exige um codigo temporario para concluir a autenticacao.
+        </p>
+
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+        <div th:if="${twoFactorPreview}" class="alert success" th:text="${twoFactorPreview}"></div>
+
+        <form method="post" th:action="@{/2fa}">
+            <label>Codigo temporario</label>
+            <input type="text" name="code" placeholder="Digite o codigo 2FA" required>
+            <button type="submit">Validar</button>
+        </form>
+
+        <a class="text-link" th:href="@{/}">Voltar ao login</a>
+    </section>
+</main>
+</body>
+</html>

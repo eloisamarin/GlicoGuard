@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacidade - GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container dashboard-layout">
+    <section class="hero-card">
+        <p class="eyebrow">LGPD e direitos do titular</p>
+        <h1>Privacidade e governanca de dados</h1>
+        <p class="lead">
+            Nesta area o titular consulta os dados coletados, entende a finalidade de cada item,
+            exporta as informacoes, revoga consentimento e solicita a exclusao definitiva.
+        </p>
+
+        <div class="link-row">
+            <a class="text-link" th:href="@{/}">Voltar ao painel</a>
+            <a class="text-link" th:href="@{/dados/exportar}">Exportar meus dados</a>
+        </div>
+    </section>
+
+    <section class="panel-grid">
+        <article class="panel-card">
+            <h2>Consentimento</h2>
+            <p th:text="'Status atual: ' + (${user.consentSigned} ? 'Assinado' : 'Revogado ou pendente')"></p>
+            <p th:text="'Versao: ' + (${user.consentVersion} != null ? user.consentVersion : 'Nao registrada')"></p>
+            <p th:text="'Finalidade: ' + (${user.consentPurpose} != null ? user.consentPurpose : 'Nao registrada')"></p>
+            <p th:text="'Assinado em: ' + (${user.consentSignedAt} != null ? #temporals.format(user.consentSignedAt, 'dd/MM/yyyy HH:mm') : 'Nao registrado')"></p>
+            <p th:text="'Revogado em: ' + (${user.consentRevokedAt} != null ? #temporals.format(user.consentRevokedAt, 'dd/MM/yyyy HH:mm') : 'Nao revogado')"></p>
+
+            <form method="post" th:action="@{/consentimento/revogar}">
+                <button type="submit">Revogar consentimento</button>
+            </form>
+        </article>
+
+        <article class="panel-card">
+            <h2>Exclusao de dados</h2>
+            <p>
+                Este fluxo remove a conta do sistema e registra a operacao na trilha de auditoria.
+            </p>
+            <form method="post" th:action="@{/dados/excluir}">
+                <button type="submit">Excluir meus dados</button>
+            </form>
+        </article>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Dados coletados e finalidade</h2>
+            <p>Listagem explicita, minimizada e associada a finalidade de tratamento.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Dado</th>
+                <th>Valor ilustrativo</th>
+                <th>Finalidade</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${collectedData}">
+                <td th:text="${item.dataName}"></td>
+                <td th:text="${item.sampleValue}"></td>
+                <td th:text="${item.purpose}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Ativos protegidos</h2>
+            <p>Evidencia de dados protegidos em repouso pelo sistema.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Ativo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="asset : ${protectedAssets}">
+                <td th:text="${asset}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar senha - GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="landing">
+<main class="container two-columns">
+    <section class="hero-card">
+        <p class="eyebrow">Recuperação de acesso</p>
+        <h1>Esqueci minha senha</h1>
+        <p class="lead">
+            O sistema emite um token aleatorio, registra a solicitacao em log, aplica expiração
+            e invalida o token logo apos o uso bem-sucedido.
+        </p>
+
+        <div class="feature-list">
+            <div class="feature-item">Token criptograficamente seguro</div>
+            <div class="feature-item">Expiração automatica em 10 minutos</div>
+            <div class="feature-item">Falha correta para token expirado ou invalido</div>
+            <div class="feature-item">Registro de sucesso e falha no processo</div>
+        </div>
+
+        <a class="text-link" th:href="@{/}">Voltar para o login</a>
+    </section>
+
+    <section class="forms-card">
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+        <div th:if="${resetCodePreview}" class="alert success" th:text="${resetCodePreview}"></div>
+
+        <div class="form-block">
+            <h2>Gerar token</h2>
+            <form method="post" th:action="@{/recuperar-senha}">
+                <label>E-mail cadastrado</label>
+                <input type="email" name="email" placeholder="voce@email.com" required>
+                <button type="submit">Gerar token</button>
+            </form>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-block">
+            <h2>Redefinir senha</h2>
+            <form method="post" th:action="@{/redefinir-senha}">
+                <label>E-mail</label>
+                <input type="email" name="email" placeholder="voce@email.com" required>
+
+                <label>Token recebido</label>
+                <input type="text" name="token" placeholder="Cole o token" required>
+
+                <label>Nova senha</label>
+                <input type="password" name="newPassword" placeholder="Minimo 8 caracteres" required>
+
+                <button type="submit">Redefinir senha</button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

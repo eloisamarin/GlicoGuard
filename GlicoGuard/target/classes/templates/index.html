@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="landing">
+<main class="container two-columns">
+    <section class="hero-card">
+        <p class="eyebrow">GlicoGuard</p>
+        <h1>GlicoGuard Saúde</h1>
+        <p class="lead">
+           O aplicativo GlicoGuard foi desenvolvido para ajudar pessoas com diabetes a controlar medicamentos, registrar medições de glicose, receber lembretes e acompanhar o consumo por gráficos interativos.
+        </p>
+
+        <div class="feature-list">
+            <div class="feature-item">Cadastro de paciente, cuidador ou administrador</div>
+            <div class="feature-item">Login com deteccao de novo dispositivo</div>
+            <div class="feature-item">Troca de senha, e-mail e nivel de acesso</div>
+            <div class="feature-item">Recuperacao de senha com codigo temporario</div>
+        </div>
+    </section>
+
+    <section class="forms-card">
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+        <div th:if="${caregiverInvitePreview}" class="alert success" th:text="${caregiverInvitePreview}"></div>
+
+        <div class="form-block">
+            <h2>Entrar</h2>
+            <form method="post" th:action="@{/login}">
+                <label>E-mail</label>
+                <input type="email" name="email" placeholder="voce@email.com" required>
+
+                <label>Senha</label>
+                <input type="password" name="password" placeholder="Digite sua senha" required>
+
+                <button type="submit">Entrar</button>
+            </form>
+
+            <a class="text-link" th:href="@{/recuperar-senha}">Esqueci minha senha</a>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-block">
+            <h2>Criar conta</h2>
+            <form method="post" th:action="@{/cadastro}">
+                <label>Nome completo</label>
+                <input type="text" name="name" placeholder="Seu nome" required>
+
+                <label>CPF</label>
+                <input type="text" name="cpf" placeholder="Somente numeros" required>
+
+                <label>Idade</label>
+                <input type="number" name="age" min="1" max="120" placeholder="Sua idade" required>
+
+                <label>E-mail</label>
+                <input type="email" name="email" placeholder="voce@email.com" required>
+
+                <label>Senha</label>
+                <input type="password" name="password" placeholder="Minimo 8 caracteres" required>
+
+                <label>Confirmar senha</label>
+                <input type="password" name="confirmPassword" placeholder="Digite a senha novamente" required>
+
+                <label>Tipo de usuario</label>
+                <select name="role">
+                    <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+                </select>
+
+                <label>Nivel de acesso</label>
+                <select name="accessLevel">
+                    <option th:each="level : ${accessLevels}" th:value="${level}" th:text="${level}"></option>
+                </select>
+
+                <label>Token de vinculacao do paciente</label>
+                <input type="text" name="caregiverInviteToken" placeholder="Use apenas para conta de cuidador">
+
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>
