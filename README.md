@@ -34,7 +34,7 @@ A organização do repositório segue padrões de escalabilidade:
 ---
 
 **Autores:**
-👤 **Caelos Henrique Costa França Junior**
+👤 **Carlos Henrique Costa França Junior**
 👤 **Eloisa Marin da Silva Pessoa**
 👤 **Letícia de Souza Machado**
 👤 **Nikolas Alves da Silva**
