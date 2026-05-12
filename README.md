@@ -1,5 +1,5 @@
 # GlicoGuard 
-
+  
 
 > Sistema inteligente para monitoramento e gestão de índices glicêmicos. 
 
