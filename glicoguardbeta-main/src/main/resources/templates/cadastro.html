@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="landing">
+<main class="container centered-panel">
+    <section class="forms-card narrow">
+        <p class="eyebrow" th:text="${pageEyebrow}"></p>
+        <h1 th:text="${pageTitle}"></h1>
+        <p class="lead">
+            <span th:text="${leadText}"></span>
+        </p>
+
+        <div class="info-box">
+            <span th:text="${infoText}"></span>
+        </div>
+
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+        <form method="post" th:action="${formAction}">
+            <label>Nome completo</label>
+            <input type="text" name="name" placeholder="Informe o nome completo" required>
+
+            <label>CPF</label>
+            <input type="text" name="cpf" placeholder="Informe apenas numeros" required>
+
+            <label>Data de nascimento</label>
+            <input type="date" name="birthDate" required>
+
+            <label>E-mail</label>
+            <input type="email" name="email" placeholder="voce@email.com" required>
+
+            <label>Senha</label>
+            <input type="password" name="password" placeholder="Minimo 8 caracteres" required>
+
+            <label>Confirmar senha</label>
+            <input type="password" name="confirmPassword" placeholder="Digite a senha novamente" required>
+
+            <label>Perfil de usuario</label>
+            <select name="role">
+                <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+            </select>
+
+            <label>Nivel de acesso</label>
+            <select name="accessLevel">
+                <option th:each="level : ${accessLevels}" th:value="${level}" th:text="${level}"></option>
+            </select>
+
+            <div th:if="${showCaregiverToken}">
+                <label>Codigo de vinculacao do paciente</label>
+                <input type="text" name="caregiverInviteToken" placeholder="Obrigatorio apenas para o cadastro de cuidador">
+            </div>
+
+            <button type="submit">Concluir cadastro</button>
+        </form>
+
+        <div class="link-row">
+            <a class="text-link" th:href="${backHref}" th:text="${backLabel}"></a>
+            <a class="text-link" th:if="${backHref == '/'}" th:href="@{/recuperar-senha}">Esqueci minha senha</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

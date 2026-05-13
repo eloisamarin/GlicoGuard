@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FA - GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="landing">
+<main class="container centered-panel">
+    <section class="forms-card narrow">
+        <p class="eyebrow">Verificacao adicional</p>
+        <h1>Validacao em duas etapas</h1>
+        <p class="lead">
+            Para concluir o acesso com seguranca, informe o codigo temporario encaminhado para a conta cadastrada.
+        </p>
+
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+        <form method="post" th:action="@{/2fa}">
+            <label>Codigo de verificacao</label>
+            <input type="text" name="code" placeholder="Informe o codigo recebido" required>
+            <button type="submit">Confirmar acesso</button>
+        </form>
+
+        <a class="text-link" th:href="@{/}">Voltar para o login</a>
+    </section>
+</main>
+</body>
+</html>

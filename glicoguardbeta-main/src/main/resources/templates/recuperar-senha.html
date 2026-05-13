@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar senha - GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="landing">
+<main class="container two-columns">
+    <section class="hero-card">
+        <p class="eyebrow">Recuperacao de credenciais</p>
+        <h1>Recuperacao de acesso</h1>
+        <p class="lead">
+            O processo de redefinicao utiliza token temporario, controle de expiracao, registro em auditoria
+            e invalidacao automatica apos a conclusao bem-sucedida.
+        </p>
+
+        <div class="feature-list">
+            <div class="feature-item">Token criptograficamente seguro</div>
+            <div class="feature-item">Expiracao automatica em 10 minutos</div>
+            <div class="feature-item">Validacao para tokens invalidos ou expirados</div>
+            <div class="feature-item">Registro de sucesso e falha do processo</div>
+        </div>
+
+        <div class="info-box">
+            O token de recuperacao sera encaminhado para o e-mail cadastrado pelo usuario.
+        </div>
+
+        <a class="text-link" th:href="@{/}">Voltar para o login</a>
+    </section>
+
+    <section class="forms-card">
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+        <div class="form-block">
+            <h2>Solicitar token</h2>
+            <form method="post" th:action="@{/recuperar-senha}">
+                <label>E-mail cadastrado</label>
+                <input type="email" name="email" placeholder="voce@email.com" required>
+                <button type="submit">Solicitar token</button>
+            </form>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-block">
+            <h2>Definir nova senha</h2>
+            <form method="post" th:action="@{/redefinir-senha}">
+                <label>E-mail</label>
+                <input type="email" name="email" placeholder="voce@email.com" required>
+
+                <label>Token recebido</label>
+                <input type="text" name="token" placeholder="Informe o token recebido" required>
+
+                <label>Nova senha</label>
+                <input type="password" name="newPassword" placeholder="Minimo 8 caracteres" required>
+
+                <button type="submit">Atualizar senha</button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

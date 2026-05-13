@@ -1,0 +1,17 @@
+# Maven
+target/
+.m2/
+
+# VS Code
+.vscode/
+
+# Configurações locais
+settings.xml
+
+# Arquivos temporários/dados locais
+sent-emails/
+data/
+
+# Sistema
+.DS_Store
+Thumbs.db

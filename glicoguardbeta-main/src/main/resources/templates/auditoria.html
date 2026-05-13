@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoria - GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container dashboard-layout">
+    <section class="hero-card">
+        <p class="eyebrow">Administracao</p>
+        <h1>Auditoria do sistema</h1>
+        <p class="lead">
+            Esta area apresenta os registros globais de autenticacao, cadastro, verificacao em duas etapas,
+            consentimento, medicacoes e demais eventos relevantes da plataforma, alem do historico de comunicacoes enviadas.
+        </p>
+
+        <div class="link-row">
+            <a class="text-link" th:href="@{/}">Voltar ao painel</a>
+        </div>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Historico de auditoria</h2>
+            <p>Registros globais disponiveis exclusivamente para o perfil administrador.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Data e hora</th>
+                <th>Usuario</th>
+                <th>Acao</th>
+                <th>Resultado</th>
+                <th>Detalhe</th>
+                <th>Hash</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${auditEntries}">
+                <td th:text="${entry.timestamp}"></td>
+                <td th:text="${entry.userEmail}"></td>
+                <td th:text="${entry.action}"></td>
+                <td th:text="${entry.result}"></td>
+                <td th:text="${entry.detail}"></td>
+                <td th:text="${entry.integritySnippet}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Historico de comunicacoes</h2>
+            <p>Registro das mensagens geradas pela aplicacao para fins de validacao e acompanhamento.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Data e hora</th>
+                <th>Destinatario</th>
+                <th>Assunto</th>
+                <th>Conteudo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="email : ${emailEntries}">
+                <td th:text="${email.sentAt}"></td>
+                <td th:text="${email.to}"></td>
+                <td th:text="${email.subject}"></td>
+                <td class="preformatted-cell" th:text="${email.body}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
