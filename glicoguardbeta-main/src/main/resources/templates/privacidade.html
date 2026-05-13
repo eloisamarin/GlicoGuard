@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacidade - GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container dashboard-layout">
+    <section class="hero-card">
+        <p class="eyebrow">Privacidade e LGPD</p>
+        <h1>Privacidade, consentimento e tratamento de dados</h1>
+        <p class="lead">
+            Esta area apresenta, de forma clara e objetiva, quais dados pessoais sao tratados pelo GlicoGuard,
+            por que essas informacoes sao necessarias, como sao protegidas e quais direitos podem ser exercidos pelo titular.
+        </p>
+
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+        <div class="link-row">
+            <a class="text-link" th:href="@{/}">Voltar ao painel</a>
+            <a class="text-link" th:href="@{/dados/exportar}">Exportar meus dados</a>
+        </div>
+    </section>
+
+    <section class="document-card">
+        <div class="section-header">
+            <div>
+                <h2 th:text="${consentDocument.title}"></h2>
+                <p>
+                    Este documento formaliza a ciencia do usuario sobre o tratamento de dados pessoais realizado pela plataforma.
+                </p>
+            </div>
+        </div>
+
+        <div class="document-body">
+            <p><strong>Titular:</strong> <span th:text="${user.name}"></span></p>
+            <p><strong>E-mail:</strong> <span th:text="${user.email}"></span></p>
+            <p><strong>Status do consentimento:</strong> <span th:text="${consentDocument.status}"></span></p>
+            <p><strong>Versao do termo:</strong> <span th:text="${consentDocument.version}"></span></p>
+            <p><strong>Finalidade registrada:</strong> <span th:text="${consentDocument.purpose}"></span></p>
+            <p><strong>Assinado em:</strong> <span th:text="${consentDocument.signedAt}"></span></p>
+            <p><strong>Revogado em:</strong> <span th:text="${consentDocument.revokedAt}"></span></p>
+
+            <div class="document-statement" th:text="${consentDocument.statement}"></div>
+
+            <p>
+                Ao registrar o consentimento, o usuario declara que compreende que o sistema trata apenas os dados
+                necessarios para autenticacao, seguranca da conta, relacionamento entre paciente e cuidador, registro
+                de medicamentos e atendimento aos direitos previstos na LGPD.
+            </p>
+        </div>
+    </section>
+
+    <section class="panel-grid">
+        <article class="panel-card">
+            <h2>Gestao do consentimento</h2>
+            <p>
+                Status atual:
+                <span th:if="${user.consentSigned}">Assinado</span>
+                <span th:unless="${user.consentSigned}">Revogado ou pendente</span>
+            </p>
+            <p>
+                Caso o consentimento ainda nao esteja ativo, utilize o botao abaixo para registrar a concordancia com o
+                termo apresentado nesta pagina.
+            </p>
+            <form method="post" th:action="@{/consentimento}">
+                <button type="submit">Registrar concordancia com o termo</button>
+            </form>
+        </article>
+
+        <article class="panel-card">
+            <h2>Revogacao e exclusao de dados</h2>
+            <p>
+                O titular pode revogar o consentimento ou solicitar a exclusao de seus dados. Ambas as operacoes
+                permanecem registradas na trilha de auditoria da aplicacao.
+            </p>
+            <form method="post" th:action="@{/consentimento/revogar}">
+                <button type="submit">Revogar consentimento</button>
+            </form>
+            <form method="post" th:action="@{/dados/excluir}">
+                <button type="submit">Excluir meus dados</button>
+            </form>
+        </article>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Finalidade do uso das informacoes</h2>
+            <p>Explicacao funcional e tecnica do tratamento de dados realizado pela aplicacao.</p>
+        </div>
+
+        <div class="explanation-grid">
+            <article class="info-box explanation-card" th:each="item : ${privacyExplanations}">
+                <h3 th:text="${item.title}"></h3>
+                <p th:text="${item.explanation}"></p>
+                <p class="muted-note" th:text="${item.codeReference}"></p>
+            </article>
+        </div>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Direitos do titular</h2>
+            <p>Direitos que podem ser exercidos diretamente no ambiente da plataforma.</p>
+        </div>
+
+        <div class="feature-list">
+            <div class="feature-item" th:each="right : ${dataSubjectRights}" th:text="${right}"></div>
+        </div>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Dados coletados e respectivas finalidades</h2>
+            <p>Relacao objetiva dos dados tratados, com indicacao clara da finalidade associada a cada item.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Dado</th>
+                <th>Valor ilustrativo</th>
+                <th>Finalidade</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${collectedData}">
+                <td th:text="${item.dataName}"></td>
+                <td th:text="${item.sampleValue}"></td>
+                <td th:text="${item.purpose}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Ativos protegidos</h2>
+            <p>Relacao dos ativos mantidos sob protecao criptografica e controle de armazenamento seguro.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Ativo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="asset : ${protectedAssets}">
+                <td th:text="${asset}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="landing">
+<main class="container centered-panel">
+    <section class="forms-card narrow">
+        <p class="eyebrow">Plataforma GlicoGuard</p>
+        <h1>GlicoGuard</h1>
+        <p class="lead">
+            O GlicoGuard é uma plataforma desenvolvida para auxiliar pessoas com diabetes no gerenciamento de medicamentos, controle da glicemia e organização da rotina de cuidados. Com lembretes personalizados, histórico de informações e gráficos interativos, o sistema ajuda o usuário a acompanhar sua saúde de forma mais prática, segura e eficiente.
+        </p>
+
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+        <div class="form-block">
+            <h2>Acesso ao sistema</h2>
+            <form method="post" th:action="@{/login}">
+                <label>E-mail</label>
+                <input type="email" name="email" placeholder="voce@email.com" required>
+
+                <label>Senha</label>
+                <input type="password" name="password" placeholder="Digite sua senha" required>
+
+                <button type="submit">Entrar</button>
+            </form>
+
+            <div class="link-row">
+                <a class="text-link" th:href="@{/cadastro}">Criar conta</a>
+                <a class="text-link" th:href="@{/recuperar-senha}">Recuperar acesso</a>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

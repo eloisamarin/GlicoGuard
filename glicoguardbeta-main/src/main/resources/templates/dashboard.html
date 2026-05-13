@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container dashboard-layout">
+    <section class="hero-card">
+        <div class="top-bar">
+            <div>
+                <p class="eyebrow">Area do usuario</p>
+                <h1 th:text="'Bem-vindo(a), ' + ${user.name}"></h1>
+            </div>
+            <form method="post" th:action="@{/logout}">
+                <button class="secondary" type="submit">Sair</button>
+            </form>
+        </div>
+
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">Perfil</span>
+                <strong th:text="${user.role}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">E-mail</span>
+                <strong th:text="${user.email}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Nivel de acesso</span>
+                <strong th:text="${user.accessLevel}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Consentimento LGPD</span>
+                <strong th:text="${user.consentSigned ? 'Assinado' : 'Revogado ou pendente'}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">CPF</span>
+                <strong th:text="${user.cpf}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Data de nascimento</span>
+                <strong th:text="${#temporals.format(user.birthDate, 'dd/MM/yyyy')}"></strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Paciente vinculado</span>
+                <strong th:text="${linkedPatientLabel}"></strong>
+            </div>
+        </div>
+
+        <div class="info-box">
+            Este painel centraliza informacoes cadastrais, configuracoes de seguranca, consentimento digital
+            e acesso aos direitos relacionados a privacidade e protecao de dados.
+        </div>
+
+        <div class="link-row">
+            <a class="text-link" th:href="@{/privacidade}">Privacidade e direitos LGPD</a>
+            <a class="text-link" th:href="@{/dados/exportar}">Exportar meus dados</a>
+            <a class="text-link" th:if="${canManageMedications}" th:href="@{/medicacoes}">Gestao de medicacoes</a>
+        </div>
+    </section>
+
+    <section class="panel-grid">
+        <article class="panel-card">
+            <h2>Atualizacao de e-mail</h2>
+            <form method="post" th:action="@{/credenciais/email}">
+                <label>Novo e-mail</label>
+                <input type="email" name="newEmail" th:value="${user.email}" required>
+                <button type="submit">Atualizar e-mail</button>
+            </form>
+        </article>
+
+        <article class="panel-card">
+            <h2>Alteracao de senha</h2>
+            <form method="post" th:action="@{/credenciais/senha}">
+                <label>Senha atual</label>
+                <input type="password" name="currentPassword" required>
+
+                <label>Nova senha</label>
+                <input type="password" name="newPassword" placeholder="Minimo 8 caracteres" required>
+
+                <button type="submit">Atualizar senha</button>
+            </form>
+        </article>
+
+        <article class="panel-card">
+            <h2>Controle de acesso</h2>
+            <form method="post" th:action="@{/credenciais/acesso}">
+                <label>Nivel de permissao</label>
+                <select name="accessLevel">
+                    <option th:each="level : ${accessLevels}"
+                            th:value="${level}"
+                            th:text="${level}"
+                            th:selected="${level == user.accessLevel}"></option>
+                </select>
+                <button type="submit">Salvar nivel de acesso</button>
+            </form>
+        </article>
+
+        <article class="panel-card">
+            <h2>Consentimento digital</h2>
+            <p>
+                O registro de consentimento armazena finalidade, versao e data de aceite, podendo ser revogado a qualquer momento.
+            </p>
+            <form method="post" th:action="@{/consentimento}">
+                <button type="submit">Registrar consentimento</button>
+            </form>
+        </article>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Controles de seguranca implementados</h2>
+            <p>Resumo objetivo dos mecanismos de protecao adotados pela aplicacao.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Controle</th>
+                <th>Descricao</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="control : ${securityControls.entrySet()}">
+                <td th:text="${control.key}"></td>
+                <td th:text="${control.value}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrador - GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container dashboard-layout">
+    <section class="hero-card">
+        <div class="top-bar">
+            <div>
+                <p class="eyebrow">Administracao</p>
+                <h1 th:text="'Painel administrativo, ' + ${user.name}"></h1>
+            </div>
+            <form method="post" th:action="@{/logout}">
+                <button class="secondary" type="submit">Sair</button>
+            </form>
+        </div>
+
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+        <div class="stats-grid">
+            <div class="stat-card" th:each="entry : ${adminSummary.entrySet()}">
+                <span class="stat-label" th:text="${entry.key}"></span>
+                <strong th:text="${entry.value}"></strong>
+            </div>
+        </div>
+
+        <div class="info-box">
+            Este painel concentra a administracao da plataforma, incluindo governanca de contas,
+            auditoria global, bloqueio operacional de usuarios e acompanhamento das comunicacoes emitidas pelo sistema.
+        </div>
+
+        <div class="link-row">
+            <a class="text-link" th:href="@{/admin/cadastro}">Cadastrar administrador</a>
+            <a class="text-link" th:href="@{/auditoria}">Auditoria completa</a>
+            <a class="text-link" th:href="@{/privacidade}">Privacidade e direitos LGPD</a>
+        </div>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Usuarios cadastrados</h2>
+            <p>O administrador pode acompanhar o estado de cada conta, bem como bloquear, desbloquear ou excluir usuarios.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Perfil</th>
+                <th>Paciente vinculado</th>
+                <th>Status</th>
+                <th>Acoes administrativas</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="managedUser : ${managedUsers}">
+                <td th:text="${managedUser.name}"></td>
+                <td th:text="${managedUser.email}"></td>
+                <td th:text="${managedUser.role}"></td>
+                <td th:text="${managedUser.linkedPatientEmail}"></td>
+                <td th:text="${managedUser.status}"></td>
+                <td>
+                    <div class="action-stack">
+                        <form method="post" th:action="@{/admin/usuarios/bloquear}">
+                            <input type="hidden" name="userEmail" th:value="${managedUser.email}">
+                            <button type="submit">Bloquear conta</button>
+                        </form>
+                        <form method="post" th:action="@{/admin/usuarios/desbloquear}">
+                            <input type="hidden" name="userEmail" th:value="${managedUser.email}">
+                            <button type="submit">Desbloquear conta</button>
+                        </form>
+                        <form method="post" th:action="@{/admin/usuarios/excluir}">
+                            <input type="hidden" name="userEmail" th:value="${managedUser.email}">
+                            <button type="submit">Excluir conta</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Eventos recentes de auditoria</h2>
+            <p>Visao resumida das operacoes mais recentes registradas pela plataforma.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Data e hora</th>
+                <th>Usuario</th>
+                <th>Acao</th>
+                <th>Resultado</th>
+                <th>Detalhe</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${recentAuditEntries}">
+                <td th:text="${entry.timestamp}"></td>
+                <td th:text="${entry.userEmail}"></td>
+                <td th:text="${entry.action}"></td>
+                <td th:text="${entry.result}"></td>
+                <td th:text="${entry.detail}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Comunicacoes recentes do sistema</h2>
+            <p>Consulta resumida aos e-mails e codigos emitidos pela aplicacao.</p>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Data e hora</th>
+                <th>Destinatario</th>
+                <th>Assunto</th>
+                <th>Conteudo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="email : ${emailEntries}">
+                <td th:text="${email.sentAt}"></td>
+                <td th:text="${email.to}"></td>
+                <td th:text="${email.subject}"></td>
+                <td class="preformatted-cell" th:text="${email.body}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

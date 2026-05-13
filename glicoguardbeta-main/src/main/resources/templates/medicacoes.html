@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicacoes - GlicoGuard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container dashboard-layout">
+    <section class="hero-card">
+        <p class="eyebrow">Tratamento e acompanhamento</p>
+        <h1>Gestao de medicacoes</h1>
+        <p class="lead" th:text="${user.role.name() == 'CUIDADOR'
+            ? 'Nesta area, o cuidador registra e acompanha as medicacoes do paciente vinculado: ' + linkedPatientLabel + '.'
+            : 'Nesta area, o paciente registra e acompanha as proprias medicacoes e horarios.'}"></p>
+
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+        <div class="link-row">
+            <a class="text-link" th:href="@{/}">Voltar ao painel</a>
+        </div>
+    </section>
+
+    <section class="panel-grid single-panel">
+        <article class="panel-card">
+            <h2>Novo registro de medicacao</h2>
+            <form method="post" th:action="@{/medicacoes}">
+                <label>Nome do medicamento</label>
+                <input type="text" name="medicationName" placeholder="Ex.: Insulina glargina" required>
+
+                <label>Dose</label>
+                <input type="text" name="dose" placeholder="Ex.: 10 UI" required>
+
+                <label>Frequencia de uso</label>
+                <input type="text" name="frequency" placeholder="Ex.: 1 vez ao dia" required>
+
+                <label>Data e horario previstos</label>
+                <input type="datetime-local" name="scheduledAt" required>
+
+                <button type="submit">Salvar registro</button>
+            </form>
+        </article>
+    </section>
+
+    <section class="table-card">
+        <div class="section-header">
+            <h2>Historico de medicacoes</h2>
+            <p>Registros informados pelo paciente ou pelo cuidador devidamente vinculado.</p>
+        </div>
+
+        <div th:if="${#lists.isEmpty(medications)}" class="info-box">
+            Ainda nao ha registros de medicacao cadastrados.
+        </div>
+
+        <table th:if="${!#lists.isEmpty(medications)}">
+            <thead>
+            <tr>
+                <th>Medicamento</th>
+                <th>Dose</th>
+                <th>Frequencia</th>
+                <th>Data e horario</th>
+                <th>Registrado por</th>
+                <th>Criado em</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="medication : ${medications}">
+                <td th:text="${medication.medicationName}"></td>
+                <td th:text="${medication.dose}"></td>
+                <td th:text="${medication.frequency}"></td>
+                <td th:text="${medication.scheduledAt}"></td>
+                <td th:text="${medication.registeredByEmail}"></td>
+                <td th:text="${medication.createdAt}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
