@@ -128,8 +128,8 @@ public class AuthService {
         return privacyService.exportUserData(account);
     }
 
-    public synchronized void deleteUser(UserAccount account) {
-        administrationService.deleteUser(account);
+    public synchronized void requestUserDeletion(UserAccount account) {
+        administrationService.requestUserDeletion(account);
     }
 
     public synchronized void deleteUserByAdministrator(UserAccount administrator, String targetEmail) {
@@ -278,7 +278,9 @@ public class AuthService {
             String email,
             String role,
             String linkedPatientEmail,
-            String status
+            String status,
+            boolean deletionRequested,
+            String deletionRequestedAt
     ) {
     }
 }
