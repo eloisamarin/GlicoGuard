@@ -1,0 +1,85 @@
+package com.glicoguard.site;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "medication_entries")
+public class EncryptedMedicationEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Lob
+    @Column(nullable = false)
+    private byte[] medicationName;
+
+    @Lob
+    @Column(nullable = false)
+    private byte[] dose;
+
+    @Lob
+    @Column(nullable = false)
+    private byte[] frequency;
+
+    private LocalDateTime scheduledAt;
+
+    @Lob
+    @Column(nullable = false)
+    private byte[] registeredByEmail;
+
+    private LocalDateTime createdAt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setMedicationName(byte[] medicationName) {
+        this.medicationName = medicationName;
+    }
+
+    public byte[] getMedicationName() {
+        return medicationName;
+    }
+
+    public void setDose(byte[] dose) {
+        this.dose = dose;
+    }
+
+    public byte[] getDose() {
+        return dose;
+    }
+
+    public void setFrequency(byte[] frequency) {
+        this.frequency = frequency;
+    }
+
+    public byte[] getFrequency() {
+        return frequency;
+    }
+
+    public LocalDateTime getScheduledAt() {
+        return scheduledAt;
+    }
+
+    public void setScheduledAt(LocalDateTime scheduledAt) {
+        this.scheduledAt = scheduledAt;
+    }
+
+    public byte[] getRegisteredByEmail() {
+        return registeredByEmail;
+    }
+
+    public void setRegisteredByEmail(byte[] registeredByEmail) {
+        this.registeredByEmail = registeredByEmail;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+}
