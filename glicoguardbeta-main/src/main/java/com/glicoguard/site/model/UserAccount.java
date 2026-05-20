@@ -35,6 +35,8 @@ public class UserAccount {
     private LocalDateTime passwordResetExpiresAt;
     private String caregiverInviteTokenHash;
     private LocalDateTime caregiverInviteTokenExpiresAt;
+    private boolean deletionRequested;
+    private LocalDateTime deletionRequestedAt;
     private final List<MedicationEntry> medications;
 
     public UserAccount(String name,
@@ -231,6 +233,22 @@ public class UserAccount {
 
     public void setCaregiverInviteTokenExpiresAt(LocalDateTime caregiverInviteTokenExpiresAt) {
         this.caregiverInviteTokenExpiresAt = caregiverInviteTokenExpiresAt;
+    }
+
+    public boolean isDeletionRequested() {
+        return deletionRequested;
+    }
+
+    public void setDeletionRequested(boolean deletionRequested) {
+        this.deletionRequested = deletionRequested;
+    }
+
+    public LocalDateTime getDeletionRequestedAt() {
+        return deletionRequestedAt;
+    }
+
+    public void setDeletionRequestedAt(LocalDateTime deletionRequestedAt) {
+        this.deletionRequestedAt = deletionRequestedAt;
     }
 
     public List<MedicationEntry> getMedications() {

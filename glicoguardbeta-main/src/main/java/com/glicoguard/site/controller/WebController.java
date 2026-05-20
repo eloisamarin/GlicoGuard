@@ -499,10 +499,13 @@ public class WebController {
             return "redirect:/";
         }
 
-        authService.deleteUser(loggedUser.get());
-        session.invalidate();
-        redirectAttributes.addFlashAttribute("success", "Dados pessoais excluidos do sistema.");
-        return "redirect:/";
+        try {
+            authService.requestUserDeletion(loggedUser.get());
+            redirectAttributes.addFlashAttribute("success", "Solicitacao de exclusao enviada ao administrador geral.");
+        } catch (IllegalArgumentException exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
+        return "redirect:/privacidade";
     }
 
     @PostMapping("/logout")
