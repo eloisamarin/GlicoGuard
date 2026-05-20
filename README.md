@@ -209,7 +209,7 @@ O escopo do projeto é demonstrar uma aplicação web com:
 
 ---
 
-# LGPD e Trataemnto de Dados
+# LGPD e Tratamento de Dados
 
 O GlicoGuard foi desenvolvido considerando os princípios da Lei Geral de Proteção de Dados Pessoais — LGPD (Lei nº 13.709/2018), com foco na proteção, transparência e segurança dos dados dos usuários.
 
@@ -234,6 +234,8 @@ Dentre os dados que o sistema poderá coletar estão:
 Esses dados serão utilizados exclusivamente para o funcionamento da aplicação.
 
 Para consultar o documento completo sobre quais dados são coletados, como são utilizados e como são protegidos, acesse:
+
+[Política de Privacidade e Tratamento de Dados — GlicoGuard](docs/seguranca.md)
 
 ---
 
