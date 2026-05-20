@@ -209,23 +209,13 @@ O escopo do projeto é demonstrar uma aplicação web com:
 
 ---
 
-# LGPD
+# LGPD e Trataemnto de Dados
 
-O sistema implementa recursos voltados aos princípios da LGPD:
+O GlicoGuard foi desenvolvido considerando os princípios da Lei Geral de Proteção de Dados Pessoais — LGPD (Lei nº 13.709/2018), com foco na proteção, transparência e segurança dos dados dos usuários.
 
-- **Transparência:** tela de privacidade mostra dados coletados e finalidades.
-- **Consentimento:** registro e revogação de termo.
-- **Acesso:** usuário pode visualizar dados tratados.
-- **Portabilidade/exportação:** usuário pode exportar seus dados.
-- **Exclusão:** usuário solicita exclusão; administrador executa a remoção.
-- **Segurança:** hash de senha, 2FA, bloqueio por tentativa, auditoria e armazenamento cifrado.
-- **Responsabilização:** trilha de auditoria com encadeamento por hash.
+Dentre os dados que o sistema poderá coletar estão:
 
----
-
-# Dados pessoais e sensíveis
-
-## Dados pessoais tratados
+## Dados pessoais
 
 - Nome
 - E-mail
@@ -241,11 +231,9 @@ O sistema implementa recursos voltados aos princípios da LGPD:
 - Relacionamento de cuidado entre paciente e cuidador.
 - Dados de segurança da conta, como hash de senha, salt, tokens temporários e códigos 2FA.
 
-## Arquivos protegidos
+Esses dados serão utilizados exclusivamente para o funcionamento da aplicação.
 
-- `data/protected/users.enc`: snapshot cifrado dos usuários.
-- `data/protected/audit.enc`: auditoria cifrada.
-- `data/protected/export-<usuario>.enc`: exportação cifrada dos dados do titular.
+Para consultar o documento completo sobre quais dados são coletados, como são utilizados e como são protegidos, acesse:
 
 ---
 
