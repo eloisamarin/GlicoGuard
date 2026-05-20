@@ -235,7 +235,7 @@ Esses dados serão utilizados exclusivamente para o funcionamento da aplicação
 
 Para consultar o documento completo sobre quais dados são coletados, como são utilizados e como são protegidos, acesse:
 
-[Política de Privacidade e Tratamento de Dados — GlicoGuard](docs/seguranca.md)
+[Aviso de Privacidade e Tratamento de Dados — GlicoGuard](docs/seguranca.md)
 
 ---
 
