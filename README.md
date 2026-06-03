@@ -1,5 +1,14 @@
 # GlicoGuard
 
+---
+## Autores
+- Carlos Henrique Costa França Junior  RGM: 11231101059
+- Eloisa Marin da Silva Pessoa   RGM: 11231104559
+- Letícia de Souza Machado    RGM: 11231103243
+- Nikolas Alves da Silva   RGM: 11231104116
+
+---
+
 Sistema web em Java para apoio ao gerenciamento de contas, autenticação, consentimento LGPD, privacidade e registros básicos relacionados ao cuidado glicêmico.
 
 O projeto atual está organizado como uma aplicação Spring Boot com telas Thymeleaf, persistência local protegida por criptografia e trilha de auditoria encadeada por hash.
